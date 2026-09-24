@@ -1,0 +1,263 @@
+/* Panificio Rizzi Nello · Niguarda — «Il pane è vita.»
+   Le parole di Nello Rizzi aprono il sito; la struttura sono i mestieri dell'arte bianca
+   di questo forno; la firma è la farina che scende dal setaccio e si posa fino a diventare
+   testo. Fondo: il legno del loro negozio (è tutto di legno) e il bianco della farina. */
+
+/* ── reset tecnico (PLUMBING) ── */
+[hidden]{display:none !important}
+img{max-width:100%;height:auto}
+*,*::before,*::after{box-sizing:border-box}
+
+:root{
+  --legno-scuro:#3E2415; --legno-medio:#5A3520; --legno:#8B5A2B; --legno-chiaro:#C9925B;
+  --farina:#F7F1E6; --farina-scura:#EFE5D3; --bianco:#FFFFFF;
+  --crosta:#B9711F; --oro:#D4A73A;
+  --inchiostro:#2B1D12; --grigio:#6E6259; --grigio-chiaro:#CFC4B5;
+  --f-tit:'Gelasio',Georgia,'Times New Roman',serif;
+  --f-txt:'Geologica',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --lato:clamp(1.2rem,6vw,6rem);
+  --testata:68px;
+}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--testata) + 8px)}
+body{margin:0;font-family:var(--f-txt);font-size:1.06rem;line-height:1.65;color:var(--inchiostro);background:var(--farina);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{display:block}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--f-tit);font-weight:700;line-height:1.04;margin:0;letter-spacing:-.015em}
+h2{font-size:clamp(2rem,4.4vw,3.4rem)}
+h3{font-size:clamp(1.2rem,1.9vw,1.45rem);font-weight:700}
+p{margin:0 0 1em}
+b,strong{font-weight:600}
+em,i{font-style:italic}
+:focus-visible{outline:3px solid var(--oro);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* reveal: stato iniziale solo dietro .js (anti-flash) */
+.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+.js .reveal.in-view{opacity:1;transform:none}
+html:not(.js) .reveal{opacity:1;transform:none}
+
+/* i titoli-firma: MAI nascosti dal CSS; il filtro «farina» lo mette e lo toglie il JS */
+.farina{will-change:filter}
+
+/* ── fondi di legno ── */
+.legno{background-color:var(--legno-scuro);background-image:linear-gradient(180deg,rgba(255,255,255,.05),rgba(0,0,0,.18)),repeating-linear-gradient(90deg,rgba(0,0,0,.09) 0 2px,transparent 2px 9px,rgba(255,255,255,.03) 9px 10px,transparent 10px 23px);color:var(--farina)}
+.legno .grigio,.legno .mestiere__p,.legno figcaption{color:rgba(247,241,230,.82)}
+
+/* ── bottoni ── */
+.bottone{display:inline-flex;align-items:center;justify-content:center;gap:.5em;padding:.9em 1.5em;font-family:var(--f-txt);font-weight:600;font-size:1rem;text-decoration:none;border:2px solid transparent;border-radius:999px;line-height:1;transition:transform .2s,background-color .2s,color .2s,border-color .2s}
+.bottone:hover{transform:translateY(-2px)}
+.bottone--farina{background:var(--farina);color:var(--legno-scuro)}
+.bottone--farina:hover{background:#fff}
+.bottone--legno{background:var(--legno-scuro);color:var(--farina)}
+.bottone--legno:hover{background:var(--legno-medio)}
+.bottone--crosta{background:var(--crosta);color:#fff}
+.bottone--crosta:hover{background:#A2611A}
+.bottone--filo{border-color:var(--legno-scuro);color:var(--legno-scuro)}
+.bottone--filo:hover{background:var(--legno-scuro);color:var(--farina)}
+.bottone--filo-chiaro{border-color:rgba(247,241,230,.75);color:var(--farina)}
+.bottone--filo-chiaro:hover{background:var(--farina);color:var(--legno-scuro)}
+
+/* ── intro: la spolverata di farina sul legno ── */
+.intro{position:fixed;inset:0;z-index:300;display:grid;place-content:center;justify-items:center;gap:1rem;background-color:var(--legno-scuro);background-image:radial-gradient(circle,rgba(247,241,230,.55) .8px,transparent 1.4px),radial-gradient(circle,rgba(247,241,230,.35) .7px,transparent 1.3px);background-size:23px 29px,37px 41px;background-position:0 0,11px 7px;color:var(--farina);transition:opacity .6s,visibility .6s;animation:nevica 2.4s linear infinite}
+@keyframes nevica{to{background-position:0 29px,11px 48px}}
+.intro.hide{opacity:0;visibility:hidden}
+.intro__nome{margin:0;font-family:var(--f-tit);font-weight:400;font-style:italic;font-size:clamp(2rem,6vw,3.6rem);line-height:1.1;text-align:center;animation:posa 1.2s ease-out .15s both}
+.intro__nome b{display:block;font-style:normal;font-weight:700;font-size:.62em;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.2em;color:var(--legno-chiaro)}
+@keyframes posa{from{opacity:0;filter:blur(10px);transform:translateY(-10px)}to{opacity:1;filter:blur(0);transform:none}}
+.intro__skip{margin-top:.4rem;background:none;border:0;color:rgba(247,241,230,.8);font:inherit;font-weight:600;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+
+/* ── testata (fondo pieno, NIENTE backdrop-filter) ── */
+.testata{position:sticky;top:0;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:1rem;height:var(--testata);padding:0 clamp(1rem,4vw,3rem);background:var(--farina);color:var(--inchiostro);border-bottom:3px solid var(--legno-scuro);max-width:100%;overflow:hidden}
+.marchio{display:inline-flex;align-items:baseline;gap:.4rem;text-decoration:none;line-height:1;white-space:nowrap}
+.marchio__il{font-family:var(--f-txt);font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--legno)}
+.marchio__di{font-family:var(--f-tit);font-style:italic;font-weight:700;font-size:1.45rem;color:var(--legno-scuro)}
+.nav{display:flex;gap:clamp(.8rem,1.8vw,1.5rem)}
+.nav a{font-weight:500;font-size:.95rem;text-decoration:none;padding:.2em 0;border-bottom:3px solid transparent;white-space:nowrap}
+.nav a:hover{border-bottom-color:var(--crosta)}
+.testata__coda{display:flex;align-items:center;gap:.8rem;flex:none;min-width:0}
+.lingue{display:flex;border:1.5px solid var(--legno-scuro);border-radius:999px;overflow:hidden}
+.lingue button{background:none;border:0;color:var(--legno-scuro);font-family:var(--f-txt);font-weight:700;font-size:.8rem;letter-spacing:.06em;padding:.35em .7em;cursor:pointer;opacity:.6}
+.lingue button.is-on{background:var(--legno-scuro);color:var(--farina);opacity:1}
+.burger{display:none;position:relative;z-index:96;width:44px;height:44px;margin-right:-8px;padding:0;background:none;border:0;cursor:pointer}
+.burger span{display:block;width:26px;height:3px;margin:5px auto;background:var(--legno-scuro);border-radius:3px;transition:transform .25s,opacity .25s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.drawer{position:fixed;inset:var(--testata) 0 0 0;z-index:89;display:flex;flex-direction:column;gap:.2rem;padding:2rem var(--lato);background:var(--legno-scuro);color:var(--farina);overflow-y:auto}
+.drawer a{font-family:var(--f-tit);font-weight:700;font-size:clamp(1.8rem,8vw,3rem);text-decoration:none;line-height:1.15;border-bottom:1px solid rgba(247,241,230,.18);padding:.25em 0}
+.drawer a.drawer__cta{margin-top:1.4rem;border:0;color:var(--legno-chiaro);font-family:var(--f-txt);font-size:clamp(1.2rem,5vw,1.6rem)}
+
+/* ── apertura: sul legno, le parole di Nello ── */
+.apertura{padding:clamp(2.5rem,5vw,4.5rem) var(--lato) clamp(3rem,6vw,5rem);min-height:calc(100vh - var(--testata));display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.apertura__kicker{display:flex;align-items:center;gap:.6rem;margin:0 0 1rem;font-weight:600;font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;color:var(--legno-chiaro)}
+.apertura__kicker::before{content:'';flex:none;width:2rem;height:2px;background:var(--legno-chiaro)}
+.apertura__h{font-size:clamp(3rem,7.5vw,6.6rem);line-height:.98;margin:0 0 1.1rem;color:var(--farina)}
+.apertura__sub{max-width:36rem;font-size:clamp(1.05rem,1.3vw,1.2rem);margin:0 0 1.4rem;color:rgba(247,241,230,.9)}
+.apertura__sub em{color:var(--farina)}
+.badge-orario{display:inline-flex;align-items:center;gap:.6rem;margin:0 0 1.4rem;padding:.6rem 1rem .6rem .7rem;background:rgba(247,241,230,.1);border:1.5px solid rgba(247,241,230,.35);border-radius:999px;font-weight:600;font-size:.95rem}
+.badge-orario i{font-style:normal;display:grid;place-items:center;width:2rem;height:2rem;border-radius:50%;background:var(--oro);color:var(--legno-scuro);font-family:var(--f-tit);font-weight:700;font-size:.95rem}
+.apertura__azioni{display:flex;flex-wrap:wrap;gap:.8rem;margin:0 0 1.1rem}
+.apertura__stato{display:inline-flex;align-items:center;gap:.5rem;margin:0;font-weight:500;font-size:.98rem;color:rgba(247,241,230,.9)}
+.apertura__stato::before{content:'';width:11px;height:11px;border-radius:50%;background:var(--oro);box-shadow:0 0 0 4px rgba(212,167,58,.25)}
+.apertura__foto{margin:0;position:relative}
+.apertura__foto img{width:100%;height:auto;max-height:calc(100vh - var(--testata) - 6rem);object-fit:cover;object-position:60% 40%;border-radius:18px;box-shadow:0 24px 50px rgba(0,0,0,.35);border:6px solid rgba(247,241,230,.08)}
+.apertura__foto figcaption{margin-top:.6rem;font-size:.9rem;color:rgba(247,241,230,.7)}
+
+/* ── i mestieri dell'arte bianca ── */
+.mestiere{padding:clamp(3.5rem,8vw,7rem) var(--lato);display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.mestiere--inv{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+.mestiere--inv .mestiere__testa{order:2}
+.mestiere--farina{background:var(--farina)}
+.mestiere--farina-scura{background:var(--farina-scura)}
+.mestiere__k{display:flex;align-items:center;gap:.6rem;margin:0 0 .9rem;font-weight:600;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--crosta)}
+.legno .mestiere__k{color:var(--legno-chiaro)}
+.mestiere__k::before{content:'';flex:none;width:1.4rem;height:2px;background:currentColor}
+.mestiere__testa h2{margin-bottom:1rem}
+.mestiere__p{font-size:1.1rem;max-width:34rem;color:var(--grigio)}
+.mestiere__p em{color:var(--inchiostro)}
+.legno .mestiere__p em{color:var(--farina)}
+
+/* i pani: la griglia dei cestini */
+.pani{margin:1.4rem 0 1.6rem;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}
+.pani li{padding:.9rem 1rem;background:var(--bianco);border-radius:14px;border-bottom:3px solid var(--legno-chiaro);box-shadow:0 4px 14px rgba(62,36,21,.06)}
+.pani b{display:block;font-family:var(--f-tit);font-weight:700;font-size:1.15rem;margin-bottom:.15rem}
+.pani span{font-size:.92rem;color:var(--grigio)}
+.settimana{margin:0 0 1.6rem;padding:1.2rem 1.4rem;background:var(--legno-scuro);color:var(--farina);border-radius:16px;display:grid;gap:.3rem}
+.settimana__t{margin:0;font-family:var(--f-tit);font-style:italic;font-weight:700;font-size:1.35rem;color:var(--legno-chiaro)}
+.settimana p{margin:0;font-size:1rem}
+.settimana b{color:var(--oro)}
+
+/* elenchi semplici (focaccia, stagioni, tappe) */
+.elenco{margin:1.4rem 0 1.6rem;padding:0;list-style:none;display:grid;gap:.5rem}
+.elenco li{display:grid;grid-template-columns:auto 1fr;gap:.8rem;align-items:baseline;padding:.7rem 1rem;background:rgba(255,255,255,.1);border-radius:12px}
+.mestiere--farina .elenco li,.mestiere--farina-scura .elenco li{background:var(--bianco)}
+.elenco b{font-family:var(--f-tit);font-weight:700;font-size:1.08rem;white-space:nowrap}
+.elenco span{font-size:.95rem;color:var(--grigio)}
+.legno .elenco span{color:rgba(247,241,230,.8)}
+.stagioni{margin:1.4rem 0 1.6rem;padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.stagioni li{padding:1rem 1.1rem;background:var(--bianco);border-radius:16px;border-top:4px solid var(--oro)}
+.stagioni b{display:block;font-family:var(--f-tit);font-weight:700;font-size:1.2rem;margin-bottom:.25rem}
+.stagioni span{font-size:.95rem;color:var(--grigio)}
+
+/* le tappe della storia */
+.tappe{margin:1.4rem 0 1.6rem;padding:0;list-style:none;display:grid;gap:0;border-left:3px solid var(--legno-chiaro)}
+.tappe li{display:grid;grid-template-columns:7.2rem 1fr;gap:1rem;align-items:baseline;padding:.6rem 0 .6rem 1.2rem;position:relative}
+.tappe li::before{content:'';position:absolute;left:-9px;top:1.05rem;width:15px;height:15px;border-radius:50%;background:var(--farina);border:3px solid var(--crosta)}
+.tappe b{font-family:var(--f-tit);font-weight:700;font-size:1.2rem;color:var(--crosta)}
+.tappe span{font-size:1rem}
+
+/* al banco: le voci */
+.voci{display:grid;gap:1rem;margin-top:1.2rem}
+.badge{display:inline-grid;grid-template-columns:auto auto;align-items:center;gap:.15rem .9rem;justify-self:start;padding:.8rem 1.2rem;background:var(--farina);color:var(--legno-scuro);border-radius:16px}
+.badge__n{grid-row:span 2;font-family:var(--f-tit);font-weight:700;font-size:2.8rem;line-height:1}
+.badge__stelle{color:var(--crosta);letter-spacing:.1em}
+.badge__s{font-size:.85rem}
+.voci__cit{margin:0;padding:1.3rem 1.5rem;background:rgba(247,241,230,.08);border-left:6px solid var(--oro);border-radius:0 16px 16px 0;display:grid;gap:.5rem}
+.voci__cit p{font-family:var(--f-tit);font-style:italic;font-weight:400;font-size:clamp(1.35rem,2.4vw,2rem);line-height:1.2;margin:0}
+.voci__cit cite{font-style:normal;font-size:.88rem;color:rgba(247,241,230,.7)}
+.voci__conta{margin:0;font-size:1rem;color:rgba(247,241,230,.85)}
+.voci__conta b{color:var(--oro)}
+
+/* le tessere fotografiche */
+.tessere{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin:0;padding:0;list-style:none}
+.tessere li{margin:0}
+.tessere figure{margin:0}
+.shot{display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;font:inherit;color:inherit;border-radius:16px;overflow:hidden;box-shadow:0 8px 22px rgba(62,36,21,.16)}
+.shot img{width:100%;aspect-ratio:4/5;object-fit:cover;transition:transform .5s}
+.shot--largo img{aspect-ratio:16/10}
+.shot--quadro img{aspect-ratio:1}
+.shot--basso img{aspect-ratio:2.2/1}
+.shot:hover img{transform:scale(1.03)}
+.tessere figcaption{margin-top:.45rem;font-size:.9rem;color:var(--grigio)}
+.tessere .tutto{grid-column:1/-1}
+
+/* ── dove ── */
+.dove{padding:clamp(3.5rem,8vw,7rem) var(--lato);background:var(--farina-scura)}
+.dove__griglia{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.dove__p{font-size:1.1rem;max-width:36rem;color:var(--grigio)}
+.dove__p em{color:var(--inchiostro)}
+.dove__note{margin:1rem 0 1.4rem;padding:0;list-style:none;display:grid;gap:.45rem}
+.dove__note li{display:grid;grid-template-columns:1rem 1fr;gap:.7rem;align-items:start}
+.dove__note li::before{content:'';width:.7rem;height:.7rem;margin-top:.45rem;border-radius:50%;background:var(--crosta)}
+.dove__azioni{display:flex;flex-wrap:wrap;gap:.7rem;margin:0 0 1.6rem}
+.orari{width:100%;border-collapse:collapse;background:var(--bianco);border-radius:16px;overflow:hidden;box-shadow:0 4px 14px rgba(62,36,21,.06)}
+.orari caption{text-align:left;font-family:var(--f-tit);font-weight:700;font-size:1.1rem;padding:0 0 .5rem}
+.orari td{padding:.55rem .9rem;border-bottom:1px solid var(--farina-scura);font-size:1rem}
+.orari td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.orari tr:last-child td{border-bottom:0}
+.orari tr.is-today td{background:#FBF0D2;font-weight:600}
+.mappa{margin:0;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(62,36,21,.14)}
+.mappa iframe{display:block;width:100%;height:340px;border:0}
+.dove__foto{margin:1rem 0 0}
+.dove__foto img{width:100%;aspect-ratio:5/4;object-fit:cover;border-radius:18px}
+.dove__foto figcaption{margin-top:.5rem;font-size:.9rem;color:var(--grigio)}
+
+/* ── domande ── */
+.domande{padding:clamp(3.5rem,8vw,7rem) var(--lato);background:var(--farina)}
+.domande h2{margin-bottom:1.4rem}
+.domande details{background:var(--bianco);border-radius:14px;margin-bottom:.6rem;max-width:52rem;border-left:4px solid var(--legno-chiaro)}
+.domande summary{cursor:pointer;padding:1rem 1.2rem;font-family:var(--f-tit);font-weight:700;font-size:1.1rem;list-style:none;display:flex;justify-content:space-between;gap:1rem}
+.domande summary::-webkit-details-marker{display:none}
+.domande summary::after{content:'+';font-family:var(--f-txt);font-weight:700;color:var(--crosta);flex:none}
+.domande details[open] summary::after{content:'−'}
+.domande details p{margin:0;padding:0 1.2rem 1.1rem;color:var(--grigio)}
+
+/* ── piede ── */
+.piede{padding:clamp(2.5rem,5vw,4rem) var(--lato);color:var(--farina);display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem 3rem;align-items:start}
+.piede__m{margin:0;font-family:var(--f-tit);font-style:italic;font-weight:700;font-size:1.8rem;color:var(--legno-chiaro)}
+.piede__s{margin:.2rem 0 .8rem;font-size:.95rem;color:rgba(247,241,230,.75)}
+.piede__d{margin:0;font-size:.95rem}
+.piede a{color:var(--farina)}
+.piede__o{margin:0;font-size:.95rem;color:rgba(247,241,230,.85)}
+.piede__o b{display:block;font-family:var(--f-tit);font-style:italic;font-weight:700;font-size:1.2rem;color:var(--farina);margin-bottom:.2rem}
+.piede__b{grid-column:1/-1;margin:.5rem 0 0;padding-top:1rem;border-top:1px solid rgba(247,241,230,.18);font-size:.85rem;color:rgba(247,241,230,.65)}
+
+/* ── barra mobile ── */
+.barra{display:none}
+
+/* ── lightbox ── */
+.lightbox{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:2rem;background:rgba(43,29,18,.95)}
+.lightbox img{max-width:100%;max-height:90vh;width:auto;height:auto;border-radius:8px}
+.lightbox__chiudi{position:absolute;top:1rem;right:1rem;width:48px;height:48px;border:0;border-radius:50%;background:var(--farina);color:var(--legno-scuro);font-size:1.6rem;cursor:pointer}
+
+/* ── responsive ── */
+@media (max-width:960px){
+  .nav{display:none}
+  .burger{display:block}
+  .testata .bottone{display:none}
+  .apertura{grid-template-columns:1fr;gap:1.6rem;min-height:auto;padding-top:2rem}
+  .apertura__foto img{max-height:46vh}
+  .mestiere,.mestiere--inv{grid-template-columns:1fr;gap:1.4rem}
+  .mestiere--inv .mestiere__testa{order:0}
+  .stagioni{grid-template-columns:1fr}
+  .dove__griglia{grid-template-columns:1fr}
+  .piede{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  body{font-size:1.02rem}
+  .marchio__il{display:none}
+  .apertura__h{font-size:clamp(2.6rem,11vw,4rem)}
+  .apertura__sub{font-size:1rem}
+  .apertura__foto img{max-height:40vh;border-width:4px}
+  .pani{grid-template-columns:1fr 1fr;gap:.5rem}
+  .pani li{padding:.7rem .8rem}
+  .tappe li{grid-template-columns:1fr;gap:.1rem}
+  .tessere{gap:.6rem}
+  .badge__n{font-size:2.3rem}
+  .mappa iframe{height:260px}
+  .barra{display:grid;grid-template-columns:repeat(4,1fr);position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--legno-scuro);border-top:3px solid var(--oro);transform:translateY(110%);transition:transform .3s}
+  .barra.is-visible{transform:none}
+  .barra a{padding:.8rem .2rem .7rem;text-align:center;font-weight:600;font-size:.9rem;text-decoration:none;color:var(--farina);border-right:1px solid rgba(255,255,255,.12)}
+  .barra a:first-child{background:var(--crosta);color:#fff}
+  .piede{padding-bottom:5.5rem}
+}
+
+/* ── reduced motion ── */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .intro{display:none;animation:none}
+  .intro__nome{animation:none}
+  .js .reveal{opacity:1;transform:none;transition:none}
+  .bottone,.shot img{transition:none}
+  .farina{filter:none !important}
+}
